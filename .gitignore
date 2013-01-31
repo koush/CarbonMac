@@ -1,0 +1,6 @@
+bin
+obj
+*.suo
+*.user
+.DS_Store
+xcuserdata
