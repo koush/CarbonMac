@@ -9,7 +9,9 @@
 #import <Cocoa/Cocoa.h>
 #import "CarbonWindow.h"
 
-@interface AppDelegate : NSObject <NSApplicationDelegate>
+@interface AppDelegate : NSObject <NSApplicationDelegate> {
+    CarbonWindow* window;
+}
 
 @property (assign) IBOutlet CarbonWindow *window;
 

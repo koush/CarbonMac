@@ -10,23 +10,24 @@
 
 @implementation AppDelegate
 
+@synthesize window;
 
 -(void)applicationWillTerminate:(NSNotification *)notification
 {
-    [_window killAll];
+    [self.window killAll];
 }
 
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     // Insert code here to initialize your application 
-    [_window setBackgroundColor:[NSColor colorWithPatternImage:[NSImage imageNamed:@"carbon_fiber.jpg"]]];
+    [self.window setBackgroundColor:[NSColor colorWithPatternImage:[NSImage imageNamed:@"carbon_fiber.jpg"]]];
 }
 
 - (void) handleOpenApplicationEvent:(NSAppleEventDescriptor *)event
                      withReplyEvent:(NSAppleEventDescriptor *)replyEvent
 {
-    _window.isVisible = true;
+    self.window.isVisible = true;
 }
 
 -(void)applicationWillFinishLaunching:(NSNotification *)notification

@@ -1381,7 +1381,7 @@
 							<object class="NSTextFieldCell" key="NSCell" id="687099211">
 								<int key="NSCellFlags">67108864</int>
 								<int key="NSCellFlags2">138412032</int>
-								<string key="NSContents">To enable Carbon on your Android, please connect it to USB.</string>
+								<string key="NSContents">Please connect your Android to USB.</string>
 								<object class="NSFont" key="NSSupport">
 									<string key="NSName">LucidaGrande</string>
 									<double key="NSSize">13</double>

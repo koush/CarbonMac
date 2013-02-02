@@ -8,7 +8,10 @@
 
 #import "CarbonWindow.h"
 
-@interface Device : NSObject
+@interface Device : NSObject {
+    bool enabled;
+    bool installed;
+}
 @property (assign) bool enabled;
 @property (assign) bool installed;
 @end
@@ -29,8 +32,10 @@
 
 @implementation CarbonWindow
 
-@synthesize destroyed;
-@synthesize connectedDevices;
+//@synthesize destroyed;
+//@synthesize connectedDevices;
+//@synthesize logo;
+//@synthesize status;
 
 -(void)close {
     self.isVisible = false;
@@ -38,7 +43,7 @@
 }
 
 - (void) killAll {
-    self.destroyed = true;
+    destroyed = true;
 }
 
 + (NSString*) readProcess:(const char*) command {
@@ -75,9 +80,9 @@
 
 - (void) refresh: (id) o {
     if ([connectedDevices count] == 0) {
-        [self.logo setImage: unchecked];
-        [self.status setStringValue: @"To enable Carbon on your Android, please connect it to USB."];
-        [NSApp setApplicationIconImage: self.logo.image];
+        [logo setImage: unchecked];
+        [status setStringValue: @"Please connect your Android to USB."];
+        [NSApp setApplicationIconImage: logo.image];
         return;
     }
     bool installed = false;
@@ -93,18 +98,18 @@
         }
     }
     if (!installed) {
-        [self.logo setImage: unchecked];
-        [self.status setStringValue: @"Please install Carbon on your Android."];
+        [logo setImage: unchecked];
+        [status setStringValue: @"Please install Carbon on your Android."];
     }
     else if (!enabled) {
-        [self.logo setImage: unchecked];
-        [self.status setStringValue: @"An error occured while trying to enable Carbon."];
+        [logo setImage: unchecked];
+        [status setStringValue: @"An error occured while trying to enable Carbon."];
     }
     else {
-        [self.logo setImage: checked];
-        [self.status setStringValue: @"Carbon has been enabled on your Android."];
+        [logo setImage: checked];
+        [status setStringValue: @"Carbon has been enabled on your Android."];
     }
-    [NSApp setApplicationIconImage: self.logo.image];
+    [NSApp setApplicationIconImage: logo.image];
 }
 
 + (void) run_node_thread:(id) param {
@@ -116,7 +121,7 @@
     
     NSCharacterSet* trimChars = [NSCharacterSet characterSetWithCharactersInString: @"\n\r\t "];
     CarbonWindow* s = param;
-    while (!s.destroyed) {
+    while (!s->destroyed) {
         NSString* output = [CarbonWindow readAdbCommand:adb withCommand:"devices"];
         
         NSMutableDictionary* newConnected = [[NSMutableDictionary alloc] init];
@@ -128,7 +133,7 @@
             NSString* deviceId = [[[line stringByTrimmingCharactersInSet: trimChars] componentsSeparatedByString: @"\t"] objectAtIndex: 0];
             if ([deviceId length] == 0)
                 continue;
-            Device* device = [s.connectedDevices objectForKey: deviceId];
+            Device* device = [s->connectedDevices objectForKey: deviceId];
             if (device == nil) {
                 device = [[Device alloc] init];
             }
@@ -147,7 +152,7 @@
             [CarbonWindow runAndDetachAdbCommand:adb forDevice:deviceId withCommand: [[NSString stringWithFormat: @"CLASSPATH=%@ app_process /system/bin com.koushikdutta.shellproxy.ShellRunner2 &", classPath] UTF8String]];
             device.enabled = true;
         }
-        s.connectedDevices = newConnected;
+        s->connectedDevices = newConnected;
         
         [s performSelectorOnMainThread:@selector(refresh:) withObject: nil waitUntilDone: false];
         sleep(3);

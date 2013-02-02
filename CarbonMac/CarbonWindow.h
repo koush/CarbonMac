@@ -13,15 +13,17 @@
     NSMutableDictionary* connectedDevices;
     NSImage* checked;
     NSImage* unchecked;
+    NSImageView* logo;
+    NSTextField* status;
 }
 
 
 - (void) killAll;
 - (void) refresh: (id) o;
-
-@property (assign) bool destroyed;
-@property (retain) NSMutableDictionary* connectedDevices;
-@property (unsafe_unretained) IBOutlet NSImageView *logo;
-@property (unsafe_unretained) IBOutlet NSTextField *status;
+//
+//@property (assign) bool destroyed;
+//@property (retain) NSMutableDictionary* connectedDevices;
+//@property (unsafe_unretained) IBOutlet NSImageView *logo;
+//@property (unsafe_unretained) IBOutlet NSTextField *status;
 
 @end
